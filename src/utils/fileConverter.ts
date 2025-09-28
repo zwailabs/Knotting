@@ -193,7 +193,10 @@ async function convertPdfToText(file: File): Promise<string> {
 async function convertImageToText(file: File): Promise<string> {
   try {
     const { data: { text } } = await Tesseract.recognize(file, 'eng', {
-      logger: () => {} // Disable logging
+      logger: () => {}, // Disable logging
+      workerPath: new URL('tesseract.js/dist/worker.min.js', import.meta.url).toString(),
+      langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+      corePath: new URL('tesseract.js-core/tesseract-core.wasm.js', import.meta.url).toString()
     });
     
     if (!text.trim()) {
